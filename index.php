@@ -31,13 +31,15 @@ try {
 
 	$grap = array();
 	
-	echo "<H1>".get_prix_sql("XXBTZEUR")."</H1>";
+	$tra = new trader($id);
+	
+	echo "<H1> BTC : ".get_prix_sql("XXBTZEUR")."</H1>";
+	echo "<H1> PF : ".number_format($tra->get_total(),2)."</H1>";
 	echo date("Y-m-d H:i:s");
+	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
+
 	
 	
-
-
-$tra = new trader($id);
 
 
 
@@ -125,120 +127,6 @@ echo "</table></div>";
 
 
 
-/*
-$pf_binance = $tra->get_pf_binance();
-
-
-echo '
-<div style="overflow-x:auto;">
-<table BORDER>
-   <tr>
-       <td>Site </td>
-       <td>Monnaie </td>
-       <td>Quantité</td>
-		<td>Prix BTC</td>
-        <td>Prix EUR</td>
-		<td>Valeur</td>
-   </tr>';
-$total_binance=0;
-
-foreach ($pf_binance as $one)
-{
-
-	$key = $one['monnaie'];
-	
-	
-		echo "<tr>";
-		echo "<td> Binance </td>";
-		echo "<td>".$key."</td>";
-		echo "<td>".$one['quantite']."</td>";
-		if($key=='BTC')
-		{
-			$prixBTC = 1;
-		}
-		else
-		{
-			$prixBTC = get_prix_sql2($key,'BTC','binance');
-		}
-		echo "<td>".$prixBTC."</td>";
-		echo "<td>".get_prix_sql2($key,'EUR','binance')."</td>";
-		$valeur = $prixBTC* get_prix_sql("XXBTZEUR")*$one['quantite'];
-		$total_binance=$total_binance+$valeur;
-		$graph[$key]=$valeur;
-		echo "<td>".number_format($valeur,2)."</td>";
-		echo "</tr>";
-	
-}
-
-$total_bitrex=0;
-
-$pf_bitrex = $tra->get_pf_bitrex();
-
-foreach ($pf_bitrex as  $one){
-	
-	
-	
-	echo "<tr>";
-	echo "<td> Bitrex</td>";
-	echo "<td>".$one['monnaie']."</td>";
-	echo "<td>".$one['quantite']."</td>";
-	$prixBTC =get_prix_sql2($one['monnaie'],'BTC','bitrex');
-	echo "<td>".$prixBTC."</td>";
-	echo "<td>".get_prix_sql2($one['monnaie'],'EUR','bitrex')."</td>";
-	$valeur = $prixBTC* get_prix_sql("XXBTZEUR")*$one['quantite'];
-	$total_bitrex=$total_bitrex+$valeur;
-	$graph[$one['monnaie']]=$valeur;
-	echo "<td>".$valeur."</td>";
-	echo "</tr>";
-}
-
-
-
-$total_kraken= 0;
-
-$donnee = $tra->get_pf_kraken();
-
-foreach ($donnee as $one){
-	
-	$key = $one['monnaie'];
-	$value = $one['quantite'];
-echo "<tr>";
-echo "<td> kraken </td>";
-echo "<td>".$key."</td>";
-
-echo "<td>".number_format($value,3)."</td>";
-
-if($key != 'ZEUR')
-{
-	$prix = get_prix_sql2($key,'EUR','kraken');
-}
-else
-{ 
-$prix = 1;
-}
-
-if($key != 'XXBT')
-{
-	$prix_btc = get_prix_sql2($key,'BTC','kraken');
-}
-else
-{
-	$prix_btc = 1;
-}
-
-echo "<td>".number_format($prix_btc,5)."</td>";
-echo "<td>".number_format($prix,3)."</td>";
-echo "<td>".number_format($prix*$value,2)."</td>";
-$graph[$key]=$prix*$value;
-echo "</tr>";
-$total_kraken= $total_kraken+ $prix*$value;
-}
-
-echo "</table></div>";
-
-
-number_format($prix,3);
-*/
 $total = $total_kraken  + $total_bitrex+$total_binance;
 $total_absolu = $total + $tra->get_deja();
 $debut_mois = $tra->get_debut_mois();

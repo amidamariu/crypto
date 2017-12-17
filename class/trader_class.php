@@ -201,6 +201,7 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   	
   	}
   	
+
   	
   	public function stock_ordre_kraken()
   	{
@@ -295,6 +296,20 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   	}
   	
   	
+  	public function get_histo()
+  	{
+  		
+  		$bdd = Connexion::bdd();
+  		
+  		$sql= "SELECT * FROM `historique` WHERE `trader`=".$this->_id." ORDER BY date DESC";
+  	
+  		$donnee = $bdd->query($sql);
+  		return $donnee->fetchAll();
+  		
+  	}
+  	
+  	
+  	
   	
   	public function get_pf_bitrex()
   	{
@@ -366,6 +381,49 @@ return $donnee["deja_recup"];
 $donnee = $rep->fetch();	
 return $donnee["debut_mois"];
   }
+  
+  
+  public function get_total()
+  {
+  	$pf = $this->get_pf();
+  	
+  	$total = 0;
+  	foreach ($pf as $one)
+  	{
+  		
+  		$key = $one['monnaie'];
+  		
+  		
+  		
+  		
+  		if($key=='BTC' || $key=='XXBT')
+  		{
+  			$prixBTC = 1;
+  		}
+  		else
+  		{
+  			$prixBTC = get_prix_sql2($key,'BTC',$one['plateforme']);
+  			
+  		}
+  		
+  		if($key=='ZEUR')
+  		{
+  			$prixEUR = 1;
+  		}
+  		else
+  		{
+  			$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
+  		}
+  		
+  		$total = $total + $prixEUR*$one['quantite'];
+  		
+  		
+  	}
+  	
+  	return $total;
+  }
+  
+  
   
   
  
