@@ -30,7 +30,7 @@ echo '
    <tr>
        <td>Date </td>
        <td>Valeur </td>
-		<td>Gain dernier retrait </td>
+		<td>Gain</td>
 <td>Gain depuis début </td>
    </tr>';
 $total_binance=0;
@@ -48,8 +48,8 @@ foreach ($data as $one)
 	$debut_mois = $tra->get_debut_mois();
 	$debut = $tra->get_ini();
 	
-	echo "<td>".number_format($total-$debut_mois,2)." (".number_format((100*($total- $debut_mois))/$debut_mois,2)."%)</td>";
-	echo "<td>".number_format($total_absolu-$debut,2)." (".number_format((100*($total_absolu- $debut))/$debut,2)."%)</td>";
+	echo "<td>".number_format($total-$debut_mois,2)."€ (".number_format((100*($total- $debut_mois))/$debut_mois,2)."%)</td>";
+	echo "<td>".number_format($total_absolu-$debut,2)."€ (".number_format((100*($total_absolu- $debut))/$debut,2)."%)</td>";
 	
 	echo "</tr>";
 	
