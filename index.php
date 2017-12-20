@@ -137,11 +137,10 @@ echo "Kraken :".number_format($total_kraken,2)."<br>";
 echo "TOTAL :".(number_format($total_kraken+$total_bitrex+$total_binance,2))."<br><br>";
 
 
-
-echo "<br> benef dernier retrait: ".number_format($total-$debut_mois,2);
-echo "<br> Pourcentage dernier retrait: ".number_format((100*($total- $debut_mois))/$debut_mois,2);
-echo "<br> benef debut: ".number_format($total_absolu-$debut,2);
-echo "<br> Pourcentage debut: ".number_format((100*($total_absolu- $debut))/$debut,2);
+echo "gain depuis : <br>";
+echo "<br>minuit : ".print_evo($tra->get_minuit(),$total);
+echo "<br>dernier retrait: ".print_evo($debut_mois,$total);
+echo "<br>debut: ".print_evo($debut,$total_absolu);
 
 
 

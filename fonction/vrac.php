@@ -83,6 +83,22 @@ function get_prix_sql($monnaie)
 }
 
 
+function print_evo($montant1,$montant2)
+{
+	
+	if($montant1 > $montant2)
+	{
+	return '<font color="red">'.number_format($montant2-$montant1,0)."€ (".number_format((100*($montant2- $montant1))/$montant1,0)." %) </font> ";
+	}
+	else
+	{
+	return '<font color="green">'.number_format($montant2-$montant1,0)."€ (".number_format((100*($montant2- $montant1))/$montant1,0)." %) </font> ";
+	}
+}
+
+
+
+
 function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 {
 	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "EUR" )

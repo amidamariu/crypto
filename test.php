@@ -13,8 +13,5 @@ require_once 'fonction/vrac.php';
 
 
 $tra = new trader(1);
-$kra = $tra->get_kraken();
-echo "<pre>";
-var_dump($kra->QueryPublic('Assets'));
-echo "</pre>";
+$tra->get_minuit();
 ?>
