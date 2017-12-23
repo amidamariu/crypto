@@ -30,7 +30,7 @@ echo '
    <tr>
        <td>Date </td>
        <td>Valeur </td>
-		<td>Gain</td>
+		<td>Gain depuis RAZ</td>
 		<td>Gain 3h</td>
 		<td>Gain 24h</td>
 <td>Gain depuis début </td>
@@ -51,7 +51,19 @@ foreach ($data as $key => $value)
 	$debut_mois = $tra->get_debut_mois();
 	$debut = $tra->get_ini();
 	
-	echo "<td>".number_format($total-$debut_mois,2)."€ (".number_format((100*($total- $debut_mois))/$debut_mois,2)."%)</td>";
+	
+	
+
+	if($value['depuis_dernier_raz'] > 0)
+		{
+			echo "<td BGCOLOR='green'>".number_format($value['depuis_dernier_raz'],2)."€ (".number_format($value['depuis_dernier_raz_pourcent'],2)."%)</td>";
+		}
+		else
+		{
+			echo "<td BGCOLOR='red'>".number_format($value['depuis_dernier_raz'],2)."€ (".number_format($value['depuis_dernier_raz_pourcent'],2)."%)</td>";
+		}
+	
+	
 	
 	
 	if($key != count($data) -1 )
@@ -76,7 +88,8 @@ foreach ($data as $key => $value)
 		$diff = $value['montant'] - $data[$key+8]['montant'];
 		if($diff > 0)
 		{
-			echo "<td BGCOLOR='green'>".number_format($diff,0)."€ (".(number_format(100*$diff/$data[$key+8]['montant'],2))."%)</td>";
+			 echo "<td BGCOLOR='green'>".number_format($diff,0)."€ (".(number_format(100*$diff/$data[$key+8]['montant'],2))."%)</td>";
+		//	echo "<td BGCOLOR='red'>".print_evo($data[$key+8]['montant'],$value['montant'])."</td>";
 		}
 		else
 		{

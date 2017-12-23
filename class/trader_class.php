@@ -287,9 +287,10 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   	{
   		
   		$bdd = Connexion::bdd();
-  		
-  		$sql= "SELECT * FROM `ordre` WHERE `trader_id`=".$this->_id." AND plateforme='".$plateforme."' AND monnaie1='".$devise."'";
-  		echo $sql;
+  		$devise = $bdd->quote($devise);
+		$plateforme = $bdd->quote($plateforme);
+  		$sql= "SELECT * FROM `ordre` WHERE `trader_id`=".$this->_id." AND plateforme=".$plateforme." AND monnaie1=".$devise;
+  	
   		$donnee = $bdd->query($sql);
   		return $donnee->fetchAll();
   		
@@ -394,6 +395,14 @@ return $donnee["deja_recup"];
   	$rep = $bdd->query($sql);
 $donnee = $rep->fetch();	
 return $donnee["debut_mois"];
+  }
+  
+  
+  public function set_debut_mois()
+  {
+  	$bdd = Connexion::bdd();
+  	$sql = "UPDATE `trader` SET `debut_mois` =".$this->get_total()." WHERE `id`=".$this->_id;
+  	$rep = $bdd->query($sql);
   }
   
   

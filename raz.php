@@ -12,6 +12,17 @@ require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php'; 
 
 
-$tra = new trader(1);
-$tra->get_minuit();
+if(isset($_GET['id']))
+{
+	$id = $_GET['id'];
+}
+else
+{
+	$id= 1;
+}
+
+
+$tra = new trader($id);
+$tra->set_debut_mois();
+
 ?>

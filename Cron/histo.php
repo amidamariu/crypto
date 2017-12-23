@@ -20,9 +20,8 @@ foreach($req->fetchAll() as $trader)
 	try {
 		
 $valeur = $tra->get_total();
-
-$sql = 'INSERT INTO `historique` (`montant`, `trader`) VALUES('.$valeur.','.$trader['id'].')';
-echo $sql;
+$last_checkpoint = $tra->get_debut_mois();
+$sql = 'INSERT INTO `historique` (`montant`, `trader`,`depuis_dernier_raz`,`depuis_dernier_raz_pourcent`) VALUES('.$valeur.','.$trader['id'].','.($valeur-$last_checkpoint).','.(100*($valeur-$last_checkpoint))/$last_checkpoint.')';
 echo "<br>";
 $req = $bdd->query($sql);
 

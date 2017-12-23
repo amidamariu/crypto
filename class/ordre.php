@@ -10,7 +10,7 @@ require_once 'class/connexion_class.php';
 require_once 'class/trader_class.php';
 require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
-ini_set('display_errors', '1');
+
 if(isset($_GET['id']))
 {
 	$id = $_GET['id'];
@@ -21,7 +21,6 @@ else
 }
 
 $devise = $_GET['monnaie'];
-
 $plateforme = $_GET['plateforme'];
 
 $tra = new trader($id);
