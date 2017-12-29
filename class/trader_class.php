@@ -323,6 +323,19 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   		return $donnee['montant'];
   	}
   	
+  	public function get_lundi()
+  	{
+  		
+  		$bdd = Connexion::bdd();
+  		
+  		$sql= "SELECT * FROM `historique` WHERE `trader`=".$this->_id." AND `date` > DATE_SUB(DATE(NOW()), INTERVAL DAYOFWEEK(NOW()) DAY) ORDER BY `date` ASC LIMIT 1";
+  		$donnee = $bdd->query($sql);
+  		$donnee = $donnee->fetch();
+  		return $donnee['montant'];
+  	}
+  	
+  	
+  	
   	
   	
   	

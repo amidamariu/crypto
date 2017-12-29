@@ -1,3 +1,17 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+  
+  
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+
+</head>
+<body>
+
 <?php
 /**
  * Example usage of the KrakenAPIClient library. 
@@ -34,8 +48,8 @@ try {
 	$tra = new trader($id);
 	
 	echo "<H1> BTC : ".get_prix_sql("XXBTZEUR")."</H1>";
-	echo "<H1> PF : ".number_format($tra->get_total(),2)."</H1>";
-	echo date("Y-m-d H:i:s");
+	echo "<H1> PF : ".number_format($tra->get_total(),2)."€ (".number_format($tra->get_total()/get_prix_sql("XXBTZEUR"),4)."B)</H1>";	echo date("Y-m-d H:i:s");
+	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
 
 	
@@ -48,7 +62,8 @@ $pf = $tra->get_pf();
 
 echo '
 <div style="overflow-x:auto;">
-<table BORDER>
+<table id="example" class="display">
+<thead>
    <tr>
        <td>Site </td>
        <td>Monnaie </td>
@@ -56,7 +71,9 @@ echo '
 		<td>Prix BTC</td>
         <td>Prix EUR</td>
 		<td>Valeur</td>
-   </tr>';
+   </tr>
+</thead>
+';
 
 $total_binance=0;
 $total_bitrex=0;
@@ -141,6 +158,7 @@ echo "TOTAL :".(number_format($total_kraken+$total_bitrex+$total_binance,2))."<b
 
 echo "gain depuis : <br>";
 echo "<br>minuit : ".print_evo($tra->get_minuit(),$total);
+echo "<br>lundi : ".print_evo($tra->get_lundi(),$total);
 echo "<br>dernier raz: ".print_evo($debut_mois,$total)." (<a href='raz.php?id=".$id."' >remettre à zero</a>)";
 echo "<br>debut: ".print_evo($debut,$total_absolu);
 
@@ -161,9 +179,6 @@ echo "</center>";
 
 
 
-<!DOCTYPE HTML>
-<html>
-<head>
 <script>
 window.onload = function() {
 
@@ -193,8 +208,15 @@ chart.render();
 
 }
 </script>
-</head>
-<body>
+
+<script>
+
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>  
+
+
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>

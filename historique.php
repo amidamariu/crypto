@@ -33,6 +33,7 @@ echo '
 		<td>Gain depuis RAZ</td>
 		<td>Gain 3h</td>
 		<td>Gain 24h</td>
+		<td>Gain 7j</td>
 <td>Gain depuis début </td>
    </tr>';
 $total_binance=0;
@@ -94,6 +95,24 @@ foreach ($data as $key => $value)
 		else
 		{
 			echo "<td BGCOLOR='red' >".number_format($diff,0)."€ (".(number_format(100*$diff/$data[$key+8]['montant'],2))."%)</td>";
+		}
+	}
+	else
+	{
+		echo "<td> </td>";
+	}
+	
+	if($key < count($data) - 56 )
+	{
+		$diff = $value['montant'] - $data[$key+56]['montant'];
+		if($diff > 0)
+		{
+			echo "<td BGCOLOR='green'>".number_format($diff,0)."€ (".(number_format(100*$diff/$data[$key+56]['montant'],2))."%)</td>";
+			//	echo "<td BGCOLOR='red'>".print_evo($data[$key+8]['montant'],$value['montant'])."</td>";
+		}
+		else
+		{
+			echo "<td BGCOLOR='red' >".number_format($diff,0)."€ (".(number_format(100*$diff/$data[$key+56]['montant'],2))."%)</td>";
 		}
 	}
 	else

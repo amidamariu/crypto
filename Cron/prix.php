@@ -14,7 +14,7 @@ require_once 'fonction/vrac.php';
 
 $bdd = Connexion::bdd();
 
-for ($id = 1; $id <= 3; $id++) 
+for ($id = 1; $id <= 4; $id++) 
 {
 try {
 	
@@ -85,7 +85,7 @@ $pf = $tra->get_pf_kraken();
 }
 
 
-for ($id = 1; $id <= 3; $id++)
+for ($id = 1; $id <= 4; $id++)
 {
 	try {
 		
