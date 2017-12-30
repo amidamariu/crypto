@@ -36,7 +36,7 @@ else
 }
 
 
-$r = rand(0,10);
+$r = rand(0,100);
 
 if ($r > 1 || $id !=3)
 {
@@ -56,117 +56,21 @@ try {
 	
 
 
-
-$pf = $tra->get_pf();
-
-
-echo '
-<div style="overflow-x:auto;">
-<table id="example" class="display">
-<thead>
-   <tr>
-       <td>Site </td>
-       <td>Monnaie </td>
-       <td>Quantité</td>
-		<td>Prix BTC</td>
-        <td>Prix EUR</td>
-		<td>Valeur</td>
-   </tr>
-</thead>
-';
-
-$total_binance=0;
-$total_bitrex=0;
-$total_kraken=0;
-
-foreach ($pf as $one)
-{
-	
-	$key = $one['monnaie'];
-	
-	
-
-
-	if($key=='BTC' || $key=='XXBT')
-	{
-		$prixBTC = 1;
-	}
-	else
-	{
-		$prixBTC = get_prix_sql2($key,'BTC',$one['plateforme']);
-	
-	}
-	
-	if($key=='ZEUR')
-	{
-		$prixEUR = 1;
-	}
-	else
-	{
-		$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
-	}
-	
-	$valeurEUR = $prixEUR*$one['quantite'];
-	
-
-
-
-	
-	
-	if($one['plateforme']=="binance")
-	{
-		$total_binance = $total_binance + $valeurEUR;
-	}
-	if($one['plateforme']=="kraken")
-	{
-		$total_kraken= $total_kraken+ $valeurEUR;
-	}
-	if($one['plateforme']=="bitrex")
-	{
-		$total_bitrex= $total_bitrex + $valeurEUR;
-	}
-	
-	if($valeurEUR > 10)
-	{
-	$graph[$key]=$valeurEUR;
-	echo "<tr>";
-	echo "<td>".$one['plateforme']."</td>";
-	echo '<td> <a href="ordre.php?id='.$id.'&plateforme='.$one['plateforme'].'&monnaie='.$key.'">'.$key."<a></td>";
-	echo "<td>".$one['quantite']."</td>";
-	echo "<td>".$prixBTC."</td>";
-	echo "<td>".$prixEUR."</td>";	
-	echo "<td>".number_format($valeurEUR,2)."</td>";
-	echo "</tr>";
-	}
-
-}
-
-
-echo "</table></div>";
-
-
-
-$total = $total_kraken  + $total_bitrex+$total_binance;
+$total = $tra->get_total();
 $total_absolu = $total + $tra->get_deja();
 $debut_mois = $tra->get_debut_mois();
 $debut = $tra->get_ini();
-echo "Binance :".number_format($total_binance,2)."<br>";
-echo "Bitrex :".number_format($total_bitrex,2)."<br>";
-echo "Kraken :".number_format($total_kraken,2)."<br>";
-echo "TOTAL :".(number_format($total_kraken+$total_bitrex+$total_binance,2))."<br><br>";
 
-
-echo "gain depuis : <br>";
+echo "<center>";
+echo "<br> gain depuis : <br>";
 echo "<br>minuit : ".print_evo($tra->get_minuit(),$total);
 echo "<br>lundi : ".print_evo($tra->get_lundi(),$total);
 echo "<br>dernier raz: ".print_evo($debut_mois,$total)." (<a href='raz.php?id=".$id."' >remettre à zero</a>)";
 echo "<br>debut: ".print_evo($debut,$total_absolu);
+echo "</center>";
 
 
 
-foreach ($graph as  $key => $value){
-	$graph[$key] = 100*$value/$total;
-}
 
 
 } catch (Exception $e) {
@@ -175,44 +79,20 @@ foreach ($graph as  $key => $value){
 
 echo "</center>";
 
+$tra->print_graph();
+
 ?>
 
 
 
-<script>
-window.onload = function() {
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	title: {
-		text: "Repartition"
-	},
-	data: [{
-		type: "pie",
-		startAngle: 240,
-		yValueFormatString: "##0.00\"%\"",
-		indexLabel: "{label} {y}",
-		dataPoints: [
-
-			<?php  
-			
-			foreach ($graph as  $key => $value){
-				echo '{y: '.$value.', label: "'.$key.'"},';
-			}
-			
-			?>
-		]
-	}]
-});
-chart.render();
-
-}
-</script>
 
 <script>
 
 $(document).ready(function() {
-    $('#example').DataTable();
+    $('#example').DataTable( {
+        "order": [[ 5, "desc" ]]
+    } );
 } );
 </script>  
 
@@ -225,6 +105,15 @@ $(document).ready(function() {
 
 <?php 
 
+
+
+$tra->table_pfval();
+/*
+echo "Binance :".number_format($total_binance,2)."<br>";
+echo "Bitrex :".number_format($total_bitrex,2)."<br>";
+echo "Kraken :".number_format($total_kraken,2)."<br>";
+echo "TOTAL :".(number_format($total_kraken+$total_bitrex+$total_binance,2))."<br><br>";
+*/
 
 }
 else

@@ -8,13 +8,15 @@ class trader
 {
   private $_id;
   private $_nom;
+  private $_pfval;
+  private $_graph;
   public function __construct($id) 
   {
  
 
   $bdd = Connexion::bdd();
 
-	
+  $this->_graph = array();
   $sql = 'SELECT * FROM trader WHERE id='.$id.' ';
 $rep = $bdd->query($sql);
 $donnee = $rep->fetch();
@@ -25,9 +27,162 @@ $donnee = $rep->fetch();
   {
 	  echo "erreur";
   }
+  
+
+  $pf = $this->get_pf();
 
   
   
+  $this->_pfval = array();
+  
+  foreach ($pf as $one)
+  {
+  	
+  	
+  	$key = $one['monnaie'];
+  	
+  	
+  	
+  	
+  	if($key=='BTC' || $key=='XXBT')
+  	{
+  		$prixBTC = 1;
+  	}
+  	else
+  	{
+  		$prixBTC = get_prix_sql2($key,'BTC',$one['plateforme']);
+  		
+  	}
+  	
+  	if($key=='ZEUR')
+  	{
+  		$prixEUR = 1;
+  	}
+  	else
+  	{
+  		$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
+  	}
+  	
+  	$valeurEUR = $prixEUR*$one['quantite'];
+  	
+  	
+  	
+  	
+  	
+  	
+
+  	
+  	if($valeurEUR > 10)
+  	{
+  		$this->_graph[$key]=$valeurEUR;
+  		$this->_pfval[] = [
+  				"plateforme" => $one['plateforme'],
+  				"monnaie" => $key,
+  				"quantite" => $one['quantite'],
+  				"prixBTC" => $prixBTC,
+  				"prixEUR" => $prixEUR,
+  				"monnaie" => $key,
+  				"valeur" => $valeurEUR,
+  		];
+  		
+  	}
+  	
+  }
+  
+  $total = $this->get_total();
+  
+  foreach ($this->_graph as  $key => $value){
+  	$this->_graph[$key] = 100*$value/$total;
+  }
+  
+
+  
+  
+  }
+  
+  public function print_graph()
+  {
+  	
+  	?>
+  	
+  	<script>
+  	window.onload = function() {
+  		
+  		var chart = new CanvasJS.Chart("chartContainer", {
+  			animationEnabled: true,
+  			title: {
+  				text: "Repartition"
+  			},
+  			data: [{
+  				type: "pie",
+  				startAngle: 240,
+  				yValueFormatString: "##0.00\"%\"",
+  				indexLabel: "{label} {y}",
+  				dataPoints: [
+  						
+  						<?php
+  						
+  						foreach ($this->_graph as  $key => $value){
+  							echo '{y: '.$value.', label: "'.$key.'"},';
+  				}
+  				
+  				?>
+		]
+	}]
+});
+chart.render();
+
+}
+</script>
+
+<?php
+
+  }
+  public function  table_pfval()
+  {
+  	
+  	
+  	echo "</table></div>";
+  	
+  	
+  	echo '
+<div style="overflow-x:auto;">
+<table id="example" class="display">
+<thead>
+   <tr>
+       <td>Site </td>
+       <td>Monnaie </td>
+       <td>Quantité</td>
+		<td>Prix BTC</td>
+        <td>Prix EUR</td>
+		<td>Valeur</td>
+   </tr>
+</thead>
+';
+  	
+  	foreach ($this->_pfval as $one)
+  	{
+  		
+  		
+  		echo "<tr>";
+  		echo "<td>".$one['plateforme']."</td>";
+  		echo '<td> <a href="ordre.php?id='.$this->_id.'&plateforme='.$one['plateforme'].'&monnaie='.$one['monnaie'].'">'.$one['monnaie']."<a></td>";
+  		echo "<td>".$one['quantite']."</td>";
+  		echo "<td>".$one['prixBTC']."</td>";
+  		echo "<td>".$one['prixEUR']."</td>";
+  		echo "<td>".number_format($one['valeur'],2)."</td>";
+  		echo "</tr>";
+  		
+  	}
+  	
+  	echo "</table></div>";
+  	
+  	
+  }
+  public function get_pfval()
+  {
+  
+  	return $this->_pfval;
   }
   
   
