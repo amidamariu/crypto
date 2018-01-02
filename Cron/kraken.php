@@ -13,7 +13,7 @@ require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
 
-
+set_time_limit(300); 
 
 
 
@@ -35,6 +35,8 @@ $bdd->query($sql);
 $sql = "TRUNCATE altname";
 $bdd->query($sql);
 */
+
+
 
 foreach($req->fetchAll() as $trader)
 {
@@ -104,103 +106,6 @@ $pf = $tra->get_pf_kraken();
 
 
 }
-
-
-foreach($req->fetchAll() as $trader)
-{
-	
-	try {
-		
-		
-		$tra = new trader($trader['id']);
-		
-		
-		
-		
-		
-		$tra = new trader($id);
-		$binance=$tra->get_binance();
-		
-		$pf = $tra->get_pf_binance();
-
-		$price = $binance->prices();
-
-		foreach ($pf as  $one){
-			
-			try {
-				$key = $one['monnaie'];
-
-				if($one['monnaie'] != 'BTC')
-				{
-					$prixBTC = $price[$key.'BTC'];
-					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$key."BTC',".$prixBTC.",'binance')";
-				$bdd->query($sql);
-				echo "ok".$key."<br>";
-				}
-			}
-	
-			catch (Exception $e)
-			{
-				echo "API de merde".$key."<br>";
-			}
-		}
-	} catch (Exception $e) {
-		echo 'Exception reçue : ',  $e->getMessage(), "\n";
-	}
-	
-}
-	
-	
-
-foreach($req->fetchAll() as $trader)
-{
-	
-	try {
-		
-		
-		$tra = new trader($trader['id']);
-		
-		
-		
-		
-		
-		$tra = new trader($id);
-		$bitrex=$tra->get_bitrex();
-		$pf = $tra->get_pf_bitrex();
-		
-		
-		foreach ($pf as  $one){
-			
-			try {
-				$key = $one['monnaie'];
-				
-				if($one['monnaie'] != 'BTC')
-				{
-					$prixBTC = $bitrex->GetTicker("BTC-".$one['monnaie'])->result->Last;
-					
-					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('BTC-".$key."',".$prixBTC.",'bitrex')";
-					$bdd->query($sql);
-					echo "ok".$key."<br>";
-				}
-			}
-			
-			catch (Exception $e)
-			{
-				echo "API de merde".$key."<br>";
-			}
-		}
-	} catch (Exception $e) {
-		echo 'Exception reçue : ',  $e->getMessage(), "\n";
-	}
-	
-}
-
-
-
-
-
-
-
 
 
 ?>
