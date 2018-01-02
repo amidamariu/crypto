@@ -12,17 +12,38 @@ require_once 'class/trader_class.php';
 require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
+
+
+
+
+
+
 $bdd = Connexion::bdd();
 
-for ($id = 1; $id <= 4; $id++) 
+$sql = "SELECT * FROM `trader` WHERE 1";
+$req = $bdd->query($sql);
+
+
+
+
+/*
+
+$sql = "TRUNCATE ordre";
+$bdd->query($sql);
+$sql = "TRUNCATE remiordre";
+$bdd->query($sql);
+$sql = "TRUNCATE altname";
+$bdd->query($sql);
+*/
+
+foreach($req->fetchAll() as $trader)
 {
-try {
 	
-
-
+	try {
+		
 	
-	
-	$tra = new trader($id);
+		$tra = new trader($trader['id']);
+		
 	$kraken=$tra->get_kraken();
 	
 $pf = $tra->get_pf_kraken();
@@ -85,9 +106,13 @@ $pf = $tra->get_pf_kraken();
 }
 
 
-for ($id = 1; $id <= 4; $id++)
+foreach($req->fetchAll() as $trader)
 {
+	
 	try {
+		
+		
+		$tra = new trader($trader['id']);
 		
 		
 		
@@ -127,9 +152,13 @@ for ($id = 1; $id <= 4; $id++)
 	
 	
 
-for ($id = 1; $id <= 3; $id++)
+foreach($req->fetchAll() as $trader)
 {
+	
 	try {
+		
+		
+		$tra = new trader($trader['id']);
 		
 		
 		

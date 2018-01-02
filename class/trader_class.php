@@ -4,6 +4,7 @@ include_once "class/connexion_class.php";
 include_once "class/bitrex_class.php";
 require_once 'class/kraken_class.php';
 require_once 'class/binance_class.php';
+require_once 'fonction/vrac.php';
 class trader
 {
   private $_id;
@@ -37,7 +38,6 @@ $donnee = $rep->fetch();
   
   foreach ($pf as $one)
   {
-  	
   	
   	$key = $one['monnaie'];
   	

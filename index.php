@@ -52,9 +52,6 @@ try {
 	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
 
-	
-	
-
 
 $total = $tra->get_total();
 $total_absolu = $total + $tra->get_deja();
@@ -68,9 +65,6 @@ echo "<br>lundi : ".print_evo($tra->get_lundi(),$total);
 echo "<br>dernier raz: ".print_evo($debut_mois,$total)." (<a href='raz.php?id=".$id."' >remettre à zero</a>)";
 echo "<br>debut: ".print_evo($debut,$total_absolu);
 echo "</center>";
-
-
-
 
 
 } catch (Exception $e) {

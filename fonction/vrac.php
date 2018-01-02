@@ -101,6 +101,7 @@ function print_evo($montant1,$montant2)
 
 function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 {
+	
 	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "EUR" )
 	{
 		return	get_prix_sql("XXBTZEUR");

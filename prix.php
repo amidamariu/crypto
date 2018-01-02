@@ -430,6 +430,7 @@
 </table>
 
 <script>
+
 $(document).ready(function() {
     $('#example').DataTable();
 } );
