@@ -359,7 +359,7 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   		
   		$res = $kraken->QueryPrivate('ClosedOrders',array('opt' => 10 ));
   		
-  		$sql= "DELETE FROM `ordre` WHERE `trader_id`=".$this->$_id;
+  		$sql= "DELETE FROM `ordre` WHERE `trader_id`=".$this->_id;
   		$bdd->query($sql);
   		$tab = $res['result']['closed'];
   		
@@ -376,7 +376,7 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   					'quantite' => $line['vol_exec'],
   					'prix' => $line['price'],
   					'date' => date("Y-m-d H:i:s",$line['closetm']),
-  					'trader' => $trader['id'],
+  					'trader' => $this->_id,
   					'plateforme' => "kraken"
   			)) or die(print_r($req->errorInfo()));
   		}

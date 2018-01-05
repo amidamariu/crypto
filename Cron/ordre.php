@@ -35,6 +35,7 @@ $req = $bdd->query($sql);
 
 foreach($req->fetchAll() as $trader)
 {
+
 	
 	try {
 		
