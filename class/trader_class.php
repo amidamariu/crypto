@@ -88,7 +88,7 @@ $donnee = $rep->fetch();
   foreach ($this->_graph as  $key => $value){
   	$this->_graph[$key] = 100*$value/$total;
   }
-  
+  asort($this->_graph);
 
   
   
@@ -359,15 +359,16 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   		
   		$res = $kraken->QueryPrivate('ClosedOrders',array('opt' => 10 ));
   		
-  		$sql= "DELETE FROM `ordre` WHERE `trader_id`=".$this->_id;
-  		$bdd->query($sql);
+
+  		
+
   		$tab = $res['result']['closed'];
   		
-  		$req = $bdd->prepare('REPLACE INTO `ordre` (`type`, `pair`, `monnaie1`, `monnaie2`,`quantite`, `prix`, `date`, `trader_id`, `plateforme`)
-VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:plateforme)');
+  		$req = $bdd->prepare('REPLACE INTO `ordre` (`type`, `pair`, `monnaie1`, `monnaie2`,`quantite`, `prix`, `date`, `trader_id`, `plateforme`,`id`)
+VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:plateforme,:id)');
   		
-  		foreach ($tab as  $line){
-  			
+  		foreach ($tab as  $key => $line){
+
   			$req->execute(array(
   					'type' => $line['descr']['type'],
   					'pair' => $line['descr']['pair'],
@@ -377,11 +378,123 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   					'prix' => $line['price'],
   					'date' => date("Y-m-d H:i:s",$line['closetm']),
   					'trader' => $this->_id,
-  					'plateforme' => "kraken"
+  					'plateforme' => "kraken",
+  					'id' => "kraken_".$key
   			)) or die(print_r($req->errorInfo()));
   		}
   		
   	}
+  	
+  	
+  	
+  	
+  	
+  	public function stock_ordre_binance()
+  	{
+  		$bdd = Connexion::bdd();
+  		$bin = $this->get_binance();
+  		
+  		$data = $bin->balances(true);
+
+
+  		$bdd = Connexion::bdd();
+  		$kraken = $this->get_kraken();
+  		
+  		$req = $bdd->prepare('REPLACE INTO `ordre` (`type`, `pair`, `monnaie1`, `monnaie2`,`quantite`, `prix`, `date`, `trader_id`, `plateforme`,`id`)
+VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:plateforme,:id)');
+  		
+ 
+  		foreach ($data as $key => $value)
+  		{
+  		//	$valeur =  $value['available']*get_prix_sql2($key,'EUR','binance');
+  			if (true)
+  			{
+  			
+  			$orders = $bin->trades($key."BTC");
+  	
+  			
+  			if($orders['msg'] != "Invalid symbol.")
+  			{	
+  			foreach ($orders as $ordre)
+  			{
+  	if ( $key != "BTC")
+  	{
+  		echo $key."BTC <br>";
+  		
+  		if($ordre['isBuyer'])
+  		{
+  			$type = "buy";
+  		}
+  		else
+  		{
+  			$type = "sell";
+  		}
+  		
+  				$req->execute(array(
+  						'type' => $type,
+  						'pair' => '',
+  						'monnaie1' => $key,
+  						'monnaie2' => "BTC",
+  						'quantite' => $ordre['qty'],
+  						'prix' => $ordre['price'],
+  						'date' => date("Y-m-d H:i:s",$ordre['time']/1000),
+  						'trader' => $this->_id,
+  						'plateforme' => "binance",
+  						'id' => "binance_".$ordre['orderId']
+  				)) or die(print_r($req->errorInfo()));
+
+  	}
+  			}
+  			}
+  			
+  		
+  			$orders = $bin->trades($key."ETH");
+  			
+  			if($orders['msg'] != "Invalid symbol.")
+  			{
+  			foreach ($orders as $ordre)
+  			{
+  	
+  				if ( $key != "ETH" && $key != "BTC" )
+  				{
+  					echo $key."ETH <br>";
+  					if($ordre['isBuyer'])
+  					{
+  						$type = "buy";
+  					}
+  					else
+  					{
+  						$type = "sell";
+  					}
+  					
+  					$req->execute(array(
+  							'type' => $type,
+  							'pair' => '',
+  							'monnaie1' => $key,
+  							'monnaie2' => "ETH",
+  							'quantite' => $ordre['qty'],
+  							'prix' => $ordre['price'],
+  							'date' => date("Y-m-d H:i:s",$ordre['time']/1000),
+  							'trader' => $this->_id,
+  							'plateforme' => "binance",
+  							'id' => "binance_".$ordre['orderId']
+  					)) or die(print_r($req->errorInfo()));
+  					
+  				}
+  			}
+  			}
+  			
+  			
+  			
+  			
+  			
+  			
+  			
+  			}
+  		}
+  		
+  	}
+  	
   	
   	
   	
