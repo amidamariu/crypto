@@ -64,7 +64,7 @@ $donnee = $rep->fetch();
   	}
   	
   	$valeurEUR = $prixEUR*$one['quantite'];
-  	
+  	$valeurBTC = $prixBTC*$one['quantite'];
   	
   	if($valeurEUR > 5)
   	{
@@ -76,7 +76,8 @@ $donnee = $rep->fetch();
   				"prixBTC" => $prixBTC,
   				"prixEUR" => $prixEUR,
   				"monnaie" => $key,
-  				"valeur" => $valeurEUR,
+  				"valeurEUR" => $valeurEUR,
+  				"valeurBTC" => $valeurBTC
   		];
   		
   	}
@@ -149,7 +150,8 @@ chart.render();
        <td>Quantité</td>
 		<td>Prix BTC</td>
         <td>Prix EUR</td>
-		<td>Valeur</td>
+		<td>Valeur BTC</td>
+		<td>Valeur EUR</td>
    </tr>
 </thead>
 ';
@@ -164,7 +166,8 @@ chart.render();
   		echo "<td>".$one['quantite']."</td>";
   		echo "<td>".$one['prixBTC']."</td>";
   		echo "<td>".$one['prixEUR']."</td>";
-  		echo "<td>".number_format($one['valeur'],2)."</td>";
+  		echo "<td>".number_format($one['valeurBTC'],5)."</td>";
+  		echo "<td>".number_format($one['valeurEUR'],2)."</td>";
   		echo "</tr>";
   		
   	}

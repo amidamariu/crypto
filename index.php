@@ -85,7 +85,7 @@ $tra->print_graph();
 
 $(document).ready(function() {
     $('#example').DataTable( {
-        "order": [[ 5, "desc" ]],
+        "order": [[ 6, "desc" ]],
         "paging":   false
     } );
 } );
