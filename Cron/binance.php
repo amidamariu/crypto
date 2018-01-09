@@ -54,12 +54,19 @@ foreach($req->fetchAll() as $trader)
 			try {
 				$key = $one['monnaie'];
 
-				if($one['monnaie'] != 'BTC')
+				if($one['monnaie'] != 'BTC' && $one['monnaie'] != 'USDT')
 				{
 					$prixBTC = $price[$key.'BTC'];
 					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$key."BTC',".$prixBTC.",'binance')";
 				$bdd->query($sql);
 				echo "ok".$key."<br>";
+				}
+				if($one['monnaie'] == 'USDT')
+				{
+					$prixBTC = 1.0/$price['BTCUSDT'];
+					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$key."BTC',".$prixBTC.",'binance')";
+					$bdd->query($sql);
+					echo "ok".$key."<br>";
 				}
 			}
 	

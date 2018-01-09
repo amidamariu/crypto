@@ -32,17 +32,17 @@ $donnee = $rep->fetch();
 
   $pf = $this->get_pf();
 
-  
+ 
   
   $this->_pfval = array();
   
   foreach ($pf as $one)
   {
+
   	
   	$key = $one['monnaie'];
   	
-  	
-  	
+
   	
   	if($key=='BTC' || $key=='XXBT')
   	{
@@ -66,7 +66,7 @@ $donnee = $rep->fetch();
   	$valeurEUR = $prixEUR*$one['quantite'];
   	
   	
-  	if($valeurEUR > 10)
+  	if($valeurEUR > 5)
   	{
   		$this->_graph[$key]=$valeurEUR;
   		$this->_pfval[] = [
@@ -260,8 +260,6 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   		{
   			$bin=$this->get_binance();
   			$data = $bin->balances();
-  	
-  			
   			
   			$bdd = Connexion::bdd();
   			
