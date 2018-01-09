@@ -51,7 +51,7 @@ try {
 	echo "<H1> PF : ".number_format($tra->get_total(),2)."€ (".number_format($tra->get_total()/get_prix_sql("XXBTZEUR"),4)."B)</H1>";	echo date("Y-m-d H:i:s");
 	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
-
+	echo "<br> <a href='graph.php?id=".$id."'> graph </a> ";
 
 $total = $tra->get_total();
 $total_absolu = $total + $tra->get_deja();
