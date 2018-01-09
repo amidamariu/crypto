@@ -13,7 +13,7 @@ require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
 
-set_time_limit(300); 
+set_time_limit(3000); 
 
 
 
@@ -38,17 +38,15 @@ $bdd->query($sql);
 
 
 
-foreach($req->fetchAll() as $trader)
-{
 	
 	try {
 		
 	
-		$tra = new trader($trader['id']);
+		$tra = new trader(1);
 		
 	$kraken=$tra->get_kraken();
 	
-$pf = $tra->get_pf_kraken();
+$pf = trader::get_pfs_kraken();
 
 	foreach ($pf as  $one){
 
@@ -105,7 +103,6 @@ $pf = $tra->get_pf_kraken();
 
 
 
-}
 
 
 ?>

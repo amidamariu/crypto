@@ -523,6 +523,19 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   		
   	}
   	
+  	
+  	static public function get_pfs_kraken()
+  	{
+  		
+  		$bdd = Connexion::bdd();
+  		
+  		$sql= "SELECT DISTINCT monnaie FROM `portefeuille` WHERE plateforme='kraken'";
+  		$donnee = $bdd->query($sql);
+  		return $donnee->fetchAll();
+  		
+  	}
+  	
+  	
   	public function get_pf()
   	{
   		
