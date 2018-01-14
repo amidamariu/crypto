@@ -10,7 +10,8 @@ $bdd = Connexion::bdd();
 $sql = "SELECT * FROM `trader` WHERE 1";
 $req = $bdd->query($sql);
 
-
+$sql = "DELETE FROM `24h` WHERE date < DATE_SUB(NOW(), INTERVAL 1 DAY)";
+$bdd->query($sql);
 
 foreach($req->fetchAll() as $trader)
 {
