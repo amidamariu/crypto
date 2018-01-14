@@ -101,7 +101,8 @@ $donnee = $rep->fetch();
   	?>
   	
   	<script>
-  	window.onload = function() {
+  	
+  	 function graphf() {
   		
   		var chart = new CanvasJS.Chart("graph", {
   			animationEnabled: true,
@@ -126,8 +127,13 @@ $donnee = $rep->fetch();
 	}]
 });
 chart.render();
-
 }
+
+
+window.addEventListener("load",graphf,false);
+
+
+  	
 </script>
 
 <?php

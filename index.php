@@ -52,8 +52,7 @@ try {
 	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
 	echo "<br> <a href='graph.php?id=".$id."'> graph </a> ";
-	echo "<br> <a href='graph24.php?id=".$id."'> graph 24h</a> ";
-
+	
 $total = $tra->get_total();
 $total_absolu = $total + $tra->get_deja();
 $debut_mois = $tra->get_debut_mois();
@@ -100,6 +99,8 @@ $(document).ready(function() {
 
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div id="chartContainer24" style="height: 370px; width: 100%;"></div>
+
 </body>
 </html>
 
@@ -124,6 +125,56 @@ else
 }
 
 ?>
+
+
+<script>
+function hist24() 
+{
+
+var chart = new CanvasJS.Chart("chartContainer24", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+	zoomEnabled: true,
+	title: {
+		text: "Evolution 24h"
+	},
+	 axisY:{
+	        includeZero: false
+	      },
+	data: [{
+		type: "area",
+		dataPoints: []
+	}]
+});
+
+
+
+<?php 
+$i=0;
+foreach ($data as $key => $value)
+{
+	$i = $i -1;
+	echo 'chart.options.data[0].dataPoints.push({x: new Date("'.$value['date'].'"),y: '.$value['montant'].'});';	
+}
+
+
+?>
+chart.render();
+
+function addDataPoints(noOfDps) {
+	var xVal = chart.options.data[0].dataPoints.length + 1, yVal = 100;
+	for(var i = 0; i < noOfDps; i++) {
+		yVal = yVal +  Math.round(5 );
+		chart.options.data[0].dataPoints.push({x: xVal,y: yVal});	
+		xVal++;
+	}
+}
+
+}
+
+window.addEventListener("load",hist24,false);
+
+</script>
 
 
 
