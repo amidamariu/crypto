@@ -612,6 +612,19 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   	}
   	
   	
+  	public function get_premier()
+  	{
+  		
+  		$bdd = Connexion::bdd();
+  		
+  		$sql= "SELECT * FROM `historique` WHERE `trader`=".$this->_id." AND `date` > DATE_SUB(DATE(NOW()), INTERVAL DAYOFMONTH(NOW()) DAY) ORDER BY `date` ASC LIMIT 1";
+  		
+  		$donnee = $bdd->query($sql);
+  		$donnee = $donnee->fetch();
+  		return $donnee['montant'];
+  	}
+  	
+  	
   
   	
   	

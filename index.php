@@ -62,6 +62,7 @@ echo "<center>";
 echo "<br> gain depuis : <br>";
 echo "<br>minuit : ".print_evo($tra->get_minuit(),$total);
 echo "<br>lundi : ".print_evo($tra->get_lundi(),$total);
+echo "<br>1er : ".print_evo($tra->get_premier(),$total);
 echo "<br>dernier raz: ".print_evo($debut_mois,$total)." (<a href='raz.php?id=".$id."' >remettre à zero</a>)";
 echo "<br>debut: ".print_evo($debut,$total_absolu);
 echo "</center>";

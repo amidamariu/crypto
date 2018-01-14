@@ -13,7 +13,8 @@ require_once 'fonction/vrac.php';
 
 set_time_limit(3000); 
 
-$trader = new trader(1);
+$trader = new trader(4);
 $bin = $trader->get_binance();
-var_dump($bin->trades('rere'));
+var_dump($bin->prices());
+
 ?>
