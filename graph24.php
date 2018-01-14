@@ -21,7 +21,7 @@ else
 }
 
 $tra = new trader($id);
-$data = $tra->get_histo();
+$data = $tra->get_histo24();
 
 
 

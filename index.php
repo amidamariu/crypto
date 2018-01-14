@@ -52,6 +52,7 @@ try {
 	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
 	echo "<br> <a href='graph.php?id=".$id."'> graph </a> ";
+	echo "<br> <a href='graph24.php?id=".$id."'> graph 24h</a> ";
 
 $total = $tra->get_total();
 $total_absolu = $total + $tra->get_deja();
@@ -76,6 +77,8 @@ echo "</center>";
 
 $tra->print_graph();
 
+$data = $tra->get_histo24();
+
 ?>
 
 
@@ -93,7 +96,9 @@ $(document).ready(function() {
 </script>  
 
 
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<div id="graph" style="height: 370px; width: 100%;"></div>
+
+
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>
@@ -119,3 +124,8 @@ else
 }
 
 ?>
+
+
+
+
+
