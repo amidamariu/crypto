@@ -154,8 +154,9 @@ $i=0;
 foreach ($data as $key => $value)
 {
 	$i = $i -1;
-	echo 'chart.options.data[0].dataPoints.push({x: new Date("'.$value['date'].'"),y: '.$value['montant'].'});';	
-}
+	echo 'dateString ="'.$value['date'].'";';
+	echo "d = new Date(dateString.replace(' ', 'T'));";
+	echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	}
 
 
 ?>
