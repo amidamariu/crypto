@@ -153,10 +153,26 @@ var chart = new CanvasJS.Chart("chartContainer24", {
 $i=0;
 foreach ($data as $key => $value)
 {
+	if($i!=0)
+	{
+		if(1- abs($precedent - $value['montant'])/$value['montant'] > 0.90)
+		{
+			
+			echo 'dateString ="'.$value['date'].'";';
+			echo "d = new Date(dateString.replace(' ', 'T'));";
+			echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
+		}
+		
+	}
+	else
+	{
+		echo 'dateString ="'.$value['date'].'";';
+		echo "d = new Date(dateString.replace(' ', 'T'));";
+		echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
+	}
 	$i = $i -1;
-	echo 'dateString ="'.$value['date'].'";';
-	echo "d = new Date(dateString.replace(' ', 'T'));";
-	echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	}
+	$precedent = $value['montant'];
+}
 
 
 ?>

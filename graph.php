@@ -57,7 +57,7 @@ echo 'var dateString;';
 echo "var d;";
 
 foreach ($data as $key => $value)
-{
+{ 
 	$i = $i -1;
 	echo 'dateString ="'.$value['date'].'";';
 	echo "d = new Date(dateString.replace(' ', 'T'));";
