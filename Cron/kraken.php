@@ -56,6 +56,7 @@ $pf = trader::get_pfs_kraken();
 		if($key != 'ZEUR')
 		{
 			$pair =	KrakenAPI::get_pair($key,'ZEUR');
+
 			$res2 = $kraken->QueryPublic('Ticker', array('pair' => $pair ));
 			$prix = $res2['result'][$pair]['c'][0];
 			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$pair."',".$prix.",'kraken')";

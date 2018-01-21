@@ -101,7 +101,7 @@ function print_evo($montant1,$montant2)
 
 function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 {
-	
+	$mult = false;
 	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "EUR" )
 	{
 		return	get_prix_sql("XXBTZEUR");
@@ -113,6 +113,11 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 		if($monnaie2=="EUR")
 		{
 			$param = KrakenAPI::get_pair($monnaie1,'ZEUR');
+			if($param == null )
+			{
+			$param = KrakenAPI::get_pair($monnaie1,'XXBT');
+			$mult = true;
+			}
 		}
 		if($monnaie2=="BTC")
 		{
@@ -120,6 +125,10 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 		}
 		
 	}
+	
+	
+
+	
 	
 	if($plateforme == 'bitrex')
 	{
@@ -147,6 +156,12 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 	if($plateforme != 'kraken' && $monnaie2 == 'EUR')
 	{
 		$prix = $prix * get_prix_sql("XXBTZEUR");
+	}
+	
+	if($mult)
+	{
+		$prix = $prix * get_prix_sql("XXBTZEUR");
+		
 	}
 
 	return $prix;
