@@ -15,6 +15,10 @@ class trader
   {
  
 
+$Ssql = 0;
+$Spf = 0;
+
+
   $bdd = Connexion::bdd();
 
   $this->_graph = array();
@@ -38,7 +42,8 @@ $donnee = $rep->fetch();
   
   foreach ($pf as $one)
   {
-
+  	$t0 = microtime(true);
+ 
   	
   	$key = $one['monnaie'];
   	
@@ -62,6 +67,8 @@ $donnee = $rep->fetch();
   	{
   		$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
   	}
+  	$t1 = microtime(true);
+ // 	echo "temps requete ".($t1-$t0)."<br>";
   	
   	$valeurEUR = $prixEUR*$one['quantite'];
   	$valeurBTC = $prixBTC*$one['quantite'];
@@ -81,15 +88,24 @@ $donnee = $rep->fetch();
   		];
   		
   	}
+  	$t2 = microtime(true);
+  	
+ // 	echo "temps pf ".($t2-$t1)."<br>";
+  	
+  	
+  	$Ssql = $Ssql + ($t1-$t0);
+  	$Spf = $Spf + ($t2-$t1);
   	
   }
   
+  echo "temps sql : ".$Ssql."<br>";
+  echo "temps pf : ".$Spf."<br>";
   $total = $this->get_total();
   
   foreach ($this->_graph as  $key => $value){
   	$this->_graph[$key] = 100*$value/$total;
   }
-  asort($this->_graph);
+asort($this->_graph);
 
   
   
@@ -227,6 +243,10 @@ return $kraken;
   		
   	//	$sql= "DELETE FROM `portefeuille` WHERE `trader_id`=".$this->_id." AND plateforme='kraken'";
   	//	$bdd->query($sql);
+  	
+  		$sql = "LOCK TABLES `portefeuille` WRITE";
+  		$bdd->query($sql);
+  		
   		
   		$req_suppr = $bdd->prepare('DELETE FROM `portefeuille` WHERE `trader_id` = :trader  AND `monnaie` = :monnaie AND `plateforme` =
  :plateforme');
@@ -253,9 +273,13 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   		}
   		
   		
+  		$sql = "UNLOCK TABLES";
+  		$bdd->query($sql);
   		}
   		catch (Exception $e) {
   			echo 'Exception reçue : ',  $e->getMessage(), "\n";
+  			$sql = "UNLOCK TABLES";
+  			$bdd->query($sql);
   		}
   		
   	}
@@ -271,7 +295,8 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   			$data = $bin->balances();
   			
   			$bdd = Connexion::bdd();
-  			
+  			$sql = "LOCK TABLES `portefeuille` WRITE";
+  			$bdd->query($sql);
   			$sql= "DELETE FROM `portefeuille` WHERE `trader_id`=".$this->_id." AND plateforme='binance'";
   			$bdd->query($sql);
   			
@@ -294,6 +319,10 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   				}
   			}
   			
+  			$sql = "UNLOCK TABLES";
+  			$bdd->query($sql);
+  			
+  			
   			
   			
   			
@@ -301,6 +330,9 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   		}
   		catch (Exception $e) {
   			echo 'Exception reçue : ',  $e->getMessage(), "\n";
+  			$sql = "UNLOCK TABLES";
+  			$bdd->query($sql);
+  			
   		}
   		
   	}
@@ -598,7 +630,7 @@ VALUES(:type, :pair, :monnaie1, :monnaie2,:quantite,:prix,:date,:trader,:platefo
   		
   		$bdd = Connexion::bdd();
   		
-  		$sql= "SELECT * FROM `24h` WHERE `trader`=".$this->_id." ORDER BY date DESC";
+  		$sql= "SELECT * FROM `24h` WHERE `trader`=".$this->_id." AND date > DATE_SUB(NOW(), INTERVAL 1 DAY) ORDER BY date DESC";
   		
   		$donnee = $bdd->query($sql);
   		return $donnee->fetchAll();
