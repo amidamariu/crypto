@@ -3,6 +3,15 @@
 class Connexion {
      
     public static function bdd() {
+    	
+    	
+    	if(isset($GLOBALS["connexion"]))
+    	{
+    		return $GLOBALS["connexion"];
+    	}
+    	else
+    	{
+    	
         // fichier contenant les informations pour se connecter
         $fichier = 'config/sql.ini';
         if(file_exists($fichier)) {
@@ -19,8 +28,11 @@ class Connexion {
         } catch (Exception $e) {
         die('Erreur : '. $e->getMessage());
         }
+        $GLOBALS["connexion"] =  $bdd;
             return $bdd;
         }
+        
+    	}
 	
     }
 }
