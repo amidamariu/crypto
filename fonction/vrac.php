@@ -73,13 +73,25 @@ function get_monnaie_by_pair($pair,$num)
 function get_prix_sql($monnaie)
 {
 	
-	$bdd = Connexion::bdd();
-	$sql = "SELECT * FROM `price` WHERE `monnaie`=".'"'.$monnaie.'"';
-	$req = $bdd->query($sql);
 	
-	$data = $req->fetch();
+	if(!isset($GLOBALS['price']))
+	{
+		
+		$bdd = Connexion::bdd();
+		$sql = "SELECT * FROM `price` WHERE 1";
+		$req = $bdd->query($sql);
+		
+		$GLOBALS['price']= $req->fetchAll();
+		
+	}
 	
-	return $data['prix'];
+	
+	
+	
+	$key = array_search($monnaie,array_column($GLOBALS['price'], 'monnaie'));
+    return $GLOBALS['price'][$key]['prix'];
+		
+
 }
 
 
@@ -101,6 +113,20 @@ function print_evo($montant1,$montant2)
 
 function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 {
+	if(!isset($GLOBALS['price']))
+	{
+		
+		$bdd = Connexion::bdd();
+		$sql = "SELECT * FROM `price` WHERE 1";
+		$req = $bdd->query($sql);
+		
+		$GLOBALS['price']= $req->fetchAll();
+		
+	}
+	
+	
+	
+	
 	$mult = false;
 	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "EUR" )
 	{
@@ -143,15 +169,20 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 			$param = $monnaie1.'BTC';
 	}
 	
+
+	
+	$key = array_search($param, array_column($GLOBALS['price'], 'monnaie'));
+	if($key)
+	{
+	$prix = $GLOBALS['price'][$key]['prix'];
+	}
+	else
+	{
+	$prix = 0;
+	}
+
 	
 	
-	$bdd = Connexion::bdd();
-	$sql = "SELECT * FROM `price` WHERE `monnaie`=".'"'.$param.'"';
-	$req = $bdd->query($sql);
-	
-	$data = $req->fetch();
-	
-	$prix =  $data['prix'];
 	
 	if($plateforme != 'kraken' && $monnaie2 == 'EUR')
 	{
