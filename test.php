@@ -11,11 +11,11 @@ require_once 'class/trader_class.php';
 require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
-$tra = new trader(1);
+$tra = new trader(2);
 
 $binance=$tra->get_binance();
 
-$price = $binance->prices();
+var_dump($binance->balances());
 
 
 

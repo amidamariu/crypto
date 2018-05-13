@@ -305,14 +305,14 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   			
   			foreach ($data as $key => $value)
   			{
-  				
-  				if($value['available']!=0)
+  		
+  				if($value['available'] + $value['onOrder'] !=0)
   				{
   				$req->execute(array(
   						'trader' => $this->_id,
   						'monnaie' => $key,
   						'plateforme' => "binance",
-  						'quantite' => $value['available']
+  						'quantite' => $value['available'] + $value['onOrder'];
   				)) or die(print_r($req->errorInfo()));
   			
   			
