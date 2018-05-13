@@ -48,7 +48,6 @@ foreach($req->fetchAll() as $trader)
 		$pf = $tra->get_pf_binance();
 
 		$price = $binance->prices();
-
 		foreach ($pf as  $one){
 			
 			try {

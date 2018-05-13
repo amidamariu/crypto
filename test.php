@@ -11,23 +11,12 @@ require_once 'class/trader_class.php';
 require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
+$tra = new trader(1);
 
-$bdd = Connexion::bdd();
-$sql = "SELECT * FROM `price` WHERE 1";
-$req = $bdd->query($sql);
+$binance=$tra->get_binance();
 
-$data = $req->fetchAll();
-
+$price = $binance->prices();
 
 
-
-$key = array_search('BCXBTC', array_column($data, 'monnaie'));
-if(is_null($key))
-{
-echo "null";
-}
-echo $data[$key]['prix'];
-
-var_dump($data);
 
 ?>

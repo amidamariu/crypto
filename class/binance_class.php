@@ -2,7 +2,7 @@
 class Binance
 {
     public $btc_value = 0.00;
-    protected $base = "https://www.binance.com/api/", $api_key, $api_secret;
+    protected $base = "https://api.binance.com/api/", $api_key, $api_secret;
     public function __construct($api_key, $api_secret)
     {
         $this->api_key = $api_key;
@@ -38,7 +38,7 @@ class Binance
     }
     public function prices()
     {
-        return $this->priceData($this->request("v1/ticker/allPrices"));
+    	return $this->priceData($this->request("v1/ticker/allPrices"));
     }
     public function bookPrices()
     {

@@ -85,9 +85,6 @@ function get_prix_sql($monnaie)
 		
 	}
 	
-	
-	
-	
 	$key = array_search($monnaie,array_column($GLOBALS['price'], 'monnaie'));
     return $GLOBALS['price'][$key]['prix'];
 		
