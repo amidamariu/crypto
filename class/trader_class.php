@@ -312,7 +312,7 @@ VALUES(:trader, :monnaie, :plateforme, :quantite)');
   						'trader' => $this->_id,
   						'monnaie' => $key,
   						'plateforme' => "binance",
-  						'quantite' => $value['available'] + $value['onOrder'];
+  						'quantite' => $value['available'] + $value['onOrder']
   				)) or die(print_r($req->errorInfo()));
   			
   			
