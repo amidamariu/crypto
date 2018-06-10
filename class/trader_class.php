@@ -59,13 +59,13 @@ $donnee = $rep->fetch();
   		
   	}
   	
-  	if($key=='ZEUR')
+  	if($key=='ZUSD')
   	{
   		$prixEUR = 1;
   	}
   	else
   	{
-  		$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
+  		$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
   	}
   	$t1 = microtime(true);
  // 	echo "temps requete ".($t1-$t0)."<br>";
@@ -98,8 +98,6 @@ $donnee = $rep->fetch();
   	
   }
   
-  echo "temps sql : ".$Ssql."<br>";
-  echo "temps pf : ".$Spf."<br>";
   $total = $this->get_total();
   
   foreach ($this->_graph as  $key => $value){
@@ -171,9 +169,9 @@ window.addEventListener("load",graphf,false);
        <td>Monnaie </td>
        <td>Quantité</td>
 		<td>Prix BTC</td>
-        <td>Prix EUR</td>
+        <td>Prix USD</td>
 		<td>Valeur BTC</td>
-		<td>Valeur EUR</td>
+		<td>Valeur USD</td>
    </tr>
 </thead>
 ';
@@ -781,16 +779,17 @@ return $donnee["debut_mois"];
   			
   		}
   		
-  		if($key=='ZEUR')
+  		if($key=='USDT')
   		{
   			$prixEUR = 1;
   		}
   		else
   		{
-  			$prixEUR = get_prix_sql2($key,'EUR',$one['plateforme']);
+  			$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
   		}
   		
   		$total = $total + $prixEUR*$one['quantite'];
+  	//	echo "ajout de ".$key." valeur:".$prixEUR." quantité : ".$one['quantite']."<br>";
   		
   		
   	}

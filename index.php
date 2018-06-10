@@ -36,7 +36,7 @@ else
 }
 
 
-$r = rand(0,100);
+$r = 42;
 
 if ($r > 1 || $id !=3)
 {
@@ -47,8 +47,8 @@ try {
 	
 	$tra = new trader($id);
 	
-	echo "<H1> BTC : ".get_prix_sql("XXBTZEUR")."</H1>";
-	echo "<H1> PF : ".number_format($tra->get_total(),2)."€ (".number_format($tra->get_total()/get_prix_sql("XXBTZEUR"),4)."B)</H1>";	echo date("Y-m-d H:i:s");
+	echo "<H1> BTC : ".get_prix_sql("XXBTZUSD")."</H1>";
+	echo "<H1> PF : ".number_format($tra->get_total(),2)."$ (".number_format($tra->get_total()/get_prix_sql("XXBTZUSD"),4)."B)</H1>";	echo date("Y-m-d H:i:s");
 	
 	echo "<br> <a href='historique.php?id=".$id."'> historique </a> ";
 	echo "<br> <a href='graph.php?id=".$id."'> graph </a> ";

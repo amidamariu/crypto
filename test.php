@@ -11,12 +11,7 @@ require_once 'class/trader_class.php';
 require_once 'class/bitrex_class.php';
 require_once 'fonction/vrac.php';
 
-$tra = new trader(2);
-
-$binance=$tra->get_binance();
-
-var_dump($binance->balances());
-
+echo get_prix_sql("XXBTZUSD");
 
 
 ?>

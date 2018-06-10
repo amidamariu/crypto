@@ -53,9 +53,9 @@ $pf = trader::get_pfs_kraken();
 		try {
 			$key = $one['monnaie'];
 		
-		if($key != 'ZEUR')
+		if($key != 'ZUSD')
 		{
-			$pair =	KrakenAPI::get_pair($key,'ZEUR');
+			$pair =	KrakenAPI::get_pair($key,'ZUSD');
 
 			$res2 = $kraken->QueryPublic('Ticker', array('pair' => $pair ));
 			$prix = $res2['result'][$pair]['c'][0];
@@ -64,7 +64,7 @@ $pf = trader::get_pfs_kraken();
 		else
 		{
 			$prix = 1;
-			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZEUR'".$prix.",'kraken')";
+			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZUSD'".$prix.",'kraken')";
 		}
 
 		$bdd->query($sql);
@@ -75,7 +75,7 @@ $pf = trader::get_pfs_kraken();
 		
 		
 		
-		if($key != 'XXBT' && $key != 'ZEUR')
+		if($key != 'XXBT' && $key != 'ZUSD')
 		{
 			$pair =	KrakenAPI::get_pair($key,'XXBT');
 			$res2 = $kraken->QueryPublic('Ticker', array('pair' => $pair ));
@@ -85,7 +85,7 @@ $pf = trader::get_pfs_kraken();
 		else
 		{
 			$prix = 1;
-			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZEUR'".$prix.",'kraken')";
+			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZUSD'".$prix.",'kraken')";
 		}
 		
 		$bdd->query($sql);

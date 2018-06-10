@@ -73,9 +73,11 @@ function get_monnaie_by_pair($pair,$num)
 function get_prix_sql($monnaie)
 {
 	
-	
+
 	if(!isset($GLOBALS['price']))
 	{
+		echo "recup en base s<br>";
+		
 		
 		$bdd = Connexion::bdd();
 		$sql = "SELECT * FROM `price` WHERE 1";
@@ -84,6 +86,8 @@ function get_prix_sql($monnaie)
 		$GLOBALS['price']= $req->fetchAll();
 		
 	}
+	
+
 	
 	$key = array_search($monnaie,array_column($GLOBALS['price'], 'monnaie'));
     return $GLOBALS['price'][$key]['prix'];
@@ -112,12 +116,15 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 {
 	if(!isset($GLOBALS['price']))
 	{
+		echo "recup en base s<br>";
 		
 		$bdd = Connexion::bdd();
 		$sql = "SELECT * FROM `price` WHERE 1";
 		$req = $bdd->query($sql);
 		
+		
 		$GLOBALS['price']= $req->fetchAll();
+	//	var_dump($GLOBALS['price']);
 		
 	}
 	
@@ -125,17 +132,17 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 	
 	
 	$mult = false;
-	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "EUR" )
+	if( ($monnaie1=='BTC' || $monnaie1=='XXBT') && $monnaie2 = "USD" )
 	{
-		return	get_prix_sql("XXBTZEUR");
+		return	get_prix_sql("XXBTZUSD");
 	}
 	
 	
 	if($plateforme == "kraken")
 	{
-		if($monnaie2=="EUR")
+		if($monnaie2=="USD")
 		{
-			$param = KrakenAPI::get_pair($monnaie1,'ZEUR');
+			$param = KrakenAPI::get_pair($monnaie1,'ZUSD');
 			if($param == null )
 			{
 			$param = KrakenAPI::get_pair($monnaie1,'XXBT');
@@ -181,14 +188,14 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 	
 	
 	
-	if($plateforme != 'kraken' && $monnaie2 == 'EUR')
+	if($plateforme != 'kraken' && $monnaie2 == 'USD')
 	{
-		$prix = $prix * get_prix_sql("XXBTZEUR");
+		$prix = $prix * get_prix_sql("XXBTZUSD");
 	}
 	
 	if($mult)
 	{
-		$prix = $prix * get_prix_sql("XXBTZEUR");
+		$prix = $prix * get_prix_sql("XXBTZUSD");
 		
 	}
 
