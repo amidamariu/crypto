@@ -20,8 +20,8 @@ foreach($req->fetchAll() as $trader)
 	try {
 		
 $valeur = $tra->get_total();
-$last_checkpoint = $tra->get_debut_mois();
-$sql = 'INSERT INTO `24h` (`montant`, `trader`) VALUES('.$valeur.','.$trader['id'].')';
+$valeur_btc = $tra->get_total_btc();
+$sql = 'INSERT INTO `24h` (`montant`,`montantBTC`, `trader`) VALUES('.$valeur.','.$valeur_btc.','.$trader['id'].')';
 $req = $bdd->query($sql);
 
 	}

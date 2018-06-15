@@ -46,8 +46,7 @@ $donnee = $rep->fetch();
  
   	
   	$key = $one['monnaie'];
-  	
-
+  
   	
   	if($key=='BTC' || $key=='XXBT')
   	{
@@ -59,7 +58,7 @@ $donnee = $rep->fetch();
   		
   	}
   	
-  	if($key=='ZUSD')
+  	if($key=='USDT')
   	{
   		$prixEUR = 1;
   	}
@@ -72,10 +71,10 @@ $donnee = $rep->fetch();
   	
   	$valeurEUR = $prixEUR*$one['quantite'];
   	$valeurBTC = $prixBTC*$one['quantite'];
-  	
   	if($valeurEUR > 5)
   	{
   		$this->_graph[$key]=$valeurEUR;
+  	}
   		$this->_pfval[] = [
   				"plateforme" => $one['plateforme'],
   				"monnaie" => $key,
@@ -87,7 +86,7 @@ $donnee = $rep->fetch();
   				"valeurBTC" => $valeurBTC
   		];
   		
-  	}
+  	
   	$t2 = microtime(true);
   	
  // 	echo "temps pf ".($t2-$t1)."<br>";
@@ -179,7 +178,8 @@ window.addEventListener("load",graphf,false);
   	foreach ($this->_pfval as $one)
   	{
   		
-  		
+  		if($one['valeurEUR'] > 5)
+  		{
   		echo "<tr>";
   		echo "<td>".$one['plateforme']."</td>";
   		echo '<td> <a href="ordre.php?id='.$this->_id.'&plateforme='.$one['plateforme'].'&monnaie='.$one['monnaie'].'">'.$one['monnaie']."<a></td>";
@@ -189,6 +189,7 @@ window.addEventListener("load",graphf,false);
   		echo "<td>".number_format($one['valeurBTC'],5)."</td>";
   		echo "<td>".number_format($one['valeurEUR'],2)."</td>";
   		echo "</tr>";
+  		}
   		
   	}
   	
@@ -758,44 +759,41 @@ return $donnee["debut_mois"];
   
   public function get_total()
   {
-  	$pf = $this->get_pf();
   	
   	$total = 0;
-  	foreach ($pf as $one)
+
+  	
+  	foreach ($this->_pfval as $one)
   	{
   		
-  		$key = $one['monnaie'];
-  		
-  		
-  		
-  		
-  		if($key=='BTC' || $key=='XXBT')
-  		{
-  			$prixBTC = 1;
-  		}
-  		else
-  		{
-  			$prixBTC = get_prix_sql2($key,'BTC',$one['plateforme']);
-  			
-  		}
-  		
-  		if($key=='USDT')
-  		{
-  			$prixEUR = 1;
-  		}
-  		else
-  		{
-  			$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
-  		}
-  		
-  		$total = $total + $prixEUR*$one['quantite'];
-  	//	echo "ajout de ".$key." valeur:".$prixEUR." quantité : ".$one['quantite']."<br>";
-  		
+  			$total = $total + $one['valeurEUR'];
   		
   	}
   	
+  	
+  	
   	return $total;
   }
+  
+  
+  
+  public function get_total_btc()
+  {
+  	
+  	$total = 0;
+  	
+  	
+  	foreach ($this->_pfval as $one)
+  	{
+  
+  			$total = $total + $one['valeurBTC'];	
+  	}
+  	
+  	
+  	
+  	return $total;
+  }
+  
   
   
   
