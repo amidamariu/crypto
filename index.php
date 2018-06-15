@@ -100,6 +100,8 @@ $(document).ready(function() {
 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <div id="chartContainer24" style="height: 370px; width: 100%;"></div>
+<div id="chartContainer24BTC" style="height: 370px; width: 100%;"></div>
+
 
 </body>
 </html>
@@ -131,6 +133,10 @@ else
 function hist24() 
 {
 
+
+
+
+	
 var chart = new CanvasJS.Chart("chartContainer24", {
 	theme: "light2", // "light1", "light2", "dark1", "dark2"
 	animationEnabled: true,
@@ -147,6 +153,25 @@ var chart = new CanvasJS.Chart("chartContainer24", {
 	}]
 });
 
+var chart2 = new CanvasJS.Chart("chartContainer24BTC", {
+	theme: "light2", // "light1", "light2", "dark1", "dark2"
+	animationEnabled: true,
+	zoomEnabled: true,
+	title: {
+		text: "Evolution BTC"
+	},
+	 axisY:{
+	        includeZero: false
+	      },
+	data: [{
+		type: "area",
+		dataPoints: []
+	}]
+});
+
+
+
+
 
 
 <?php 
@@ -161,6 +186,8 @@ foreach ($data as $key => $value)
 			echo 'dateString ="'.$value['date'].'";';
 			echo "d = new Date(dateString.replace(' ', 'T'));";
 			echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
+			echo 'chart2.options.data[0].dataPoints.push({x: d,y: '.$value['montantBTC'].'});';
+			
 		}
 		
 	}
@@ -169,23 +196,35 @@ foreach ($data as $key => $value)
 		echo 'dateString ="'.$value['date'].'";';
 		echo "d = new Date(dateString.replace(' ', 'T'));";
 		echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
+		echo 'chart2.options.data[0].dataPoints.push({x: d,y: '.$value['montantBTC'].'});';
 	}
+	
+	
+
+	
+	
+	
+	
 	$i = $i -1;
 	$precedent = $value['montant'];
 }
 
 
 ?>
-chart.render();
+ chart.render();
+ chart2.render();
 
 function addDataPoints(noOfDps) {
-	var xVal = chart.options.data[0].dataPoints.length + 1, yVal = 100;
+	var xVal = chart.options.data[1].dataPoints.length + 1, yVal = 100;
 	for(var i = 0; i < noOfDps; i++) {
 		yVal = yVal +  Math.round(5 );
-		chart.options.data[0].dataPoints.push({x: xVal,y: yVal});	
+		chart.options.data[1].dataPoints.push({x: xVal,y: yVal});	
 		xVal++;
 	}
 }
+
+
+
 
 }
 

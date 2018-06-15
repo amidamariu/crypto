@@ -152,6 +152,10 @@ window.addEventListener("load",graphf,false);
 <?php
 
   }
+  
+  
+  
+  
   public function  table_pfval()
   {
   	
