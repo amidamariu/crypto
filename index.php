@@ -142,7 +142,7 @@ var chart = new CanvasJS.Chart("chartContainer24", {
 	animationEnabled: true,
 	zoomEnabled: true,
 	title: {
-		text: "Evolution 24h"
+		text: "Evolution FIAT"
 	},
 	 axisY:{
 	        includeZero: false
@@ -186,8 +186,11 @@ foreach ($data as $key => $value)
 			echo 'dateString ="'.$value['date'].'";';
 			echo "d = new Date(dateString.replace(' ', 'T'));";
 			echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
-			echo 'chart2.options.data[0].dataPoints.push({x: d,y: '.$value['montantBTC'].'});';
 			
+			if($value['montantBTC']!=0)
+			{
+			echo 'chart2.options.data[0].dataPoints.push({x: d,y: '.$value['montantBTC'].'});';
+			}
 		}
 		
 	}
@@ -196,8 +199,11 @@ foreach ($data as $key => $value)
 		echo 'dateString ="'.$value['date'].'";';
 		echo "d = new Date(dateString.replace(' ', 'T'));";
 		echo 'chart.options.data[0].dataPoints.push({x: d,y: '.$value['montant'].'});';	
+		if($value['montantBTC']!=0)
+		{
 		echo 'chart2.options.data[0].dataPoints.push({x: d,y: '.$value['montantBTC'].'});';
-	}
+		}
+		}
 	
 	
 
