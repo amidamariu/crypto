@@ -52,27 +52,28 @@ foreach($req->fetchAll() as $trader)
 		$price_bin = $binance->prices();
 		
 		echo "<pre>";
-		var_dump($GLOBALS['price']);
+	//	var_dump($price_bin);
+	//	var_dump($GLOBALS['price']);
 		echo "</pre>";
 		
 		foreach ($pf as  $one){
 			
 			try {
 				$key = $one['monnaie'];
-
+				echo "essai".$key."<br>";
 				if($one['monnaie'] != 'BTC' && $one['monnaie'] != 'USDT')
 				{
 					$prixBTC = $price_bin[$key.'BTC'];
 					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$key."BTC',".$prixBTC.",'binance')";
 				$bdd->query($sql);
-				echo "ok".$key."<br>";
+				echo "ok1".$key."<br>";
 				}
 				if($one['monnaie'] == 'USDT')
 				{
 					$prixBTC = 1.0/get_prix_sql("XXBTZUSD");
 					$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('".$key."BTC',".$prixBTC.",'binance')";
 					$bdd->query($sql);
-					echo "ok".$key."<br>";
+					echo "ok2".$key."<br>";
 				}
 			}
 	
@@ -81,7 +82,7 @@ foreach($req->fetchAll() as $trader)
 				echo "API de merde".$key."<br>";
 			}
 		}
-		break;
+
 	} catch (Exception $e) {
 		echo 'Exception reçue : ',  $e->getMessage(), "\n";
 	}

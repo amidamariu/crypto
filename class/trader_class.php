@@ -66,6 +66,13 @@ $donnee = $rep->fetch();
   	{
   		$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
   	}
+	
+	  	if($key=='ZEUR')
+  	{
+  		$prixEUR = 1.17;
+		$prixBTC = 1.17/get_prix_sql("XXBTZUSD");
+  	}
+	
   	$t1 = microtime(true);
  // 	echo "temps requete ".($t1-$t0)."<br>";
   	
@@ -104,7 +111,7 @@ $donnee = $rep->fetch();
   }
 asort($this->_graph);
 
-  
+
   
   }
   
@@ -766,7 +773,6 @@ return $donnee["debut_mois"];
   	
   	$total = 0;
 
-  	
   	foreach ($this->_pfval as $one)
   	{
   		

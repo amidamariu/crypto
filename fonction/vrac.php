@@ -153,6 +153,10 @@ function get_prix_sql2($monnaie1,$monnaie2,$plateforme)
 		{
 			$param = KrakenAPI::get_pair($monnaie1,'XXBT');
 		}
+			if($monnaie2=="ZEUR")
+			{
+				$param = "ZEUR";
+			}
 		
 	}
 	

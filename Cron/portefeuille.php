@@ -7,14 +7,14 @@ require_once 'class/trader_class.php';
 
 $bdd = Connexion::bdd();
 
-$sql = "SELECT * FROM `trader` WHERE 1";
+$sql = "SELECT * FROM `trader` WHERE 1 ORDER BY id";
 $req = $bdd->query($sql);
 
 
 foreach($req->fetchAll() as $trader)
 {
 	$tra = new trader($trader['id']);
-	
+	echo "<br>".$trader['id']; 
 	try {
 		
 		
@@ -43,6 +43,7 @@ $tra->stock_kraken();
 		echo 'Exception reçue : ',  $e->getMessage(), "\n";
 	}
 	
+		echo "<br> fin".$trader['id'];
 	
 }
 
