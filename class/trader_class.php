@@ -61,10 +61,7 @@ $donnee = $rep->fetch();
   	}
   	
   	
-  	if ($one['plateforme'] == "binance")
-  	{
-  	    $stop = $bin->openOrders($key."USDT")[0]["stopPrice"];
-  	}
+
 
   	
   	
@@ -82,6 +79,13 @@ $donnee = $rep->fetch();
   		$prixEUR = 1.17;
 		$prixBTC = 1.17/get_prix_sql("XXBTZUSD");
   	}
+  	
+  	if ($one['plateforme'] == "binance")
+  	{
+  		$stop = $bin->openOrders($key."USDT")[0]["stopPrice"];
+  		$stop = round($stop,2)."(".round((100*($prixEUR-$stop)/$prixEUR),2)."%)";
+  	}
+  	
 	
   	$t1 = microtime(true);
  // 	echo "temps requete ".($t1-$t0)."<br>";
