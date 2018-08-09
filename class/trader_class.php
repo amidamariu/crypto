@@ -40,6 +40,8 @@ $donnee = $rep->fetch();
   
   $this->_pfval = array();
   
+  $bin = $this->get_binance();
+  
   foreach ($pf as $one)
   {
   	$t0 = microtime(true);
@@ -58,6 +60,14 @@ $donnee = $rep->fetch();
   		
   	}
   	
+  	
+  	if ($one['plateforme'] == "binance")
+  	{
+  	    $stop = $bin->openOrders($key."USDT")[0]["stopPrice"];
+  	}
+
+  	
+  	
   	if($key=='USDT')
   	{
   		$prixEUR = 1;
@@ -66,6 +76,13 @@ $donnee = $rep->fetch();
   	{
   		$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
   	}
+	
+	  	if($key=='ZEUR')
+  	{
+  		$prixEUR = 1.17;
+		$prixBTC = 1.17/get_prix_sql("XXBTZUSD");
+  	}
+	
   	$t1 = microtime(true);
  // 	echo "temps requete ".($t1-$t0)."<br>";
   	
@@ -83,7 +100,8 @@ $donnee = $rep->fetch();
   				"prixEUR" => $prixEUR,
   				"monnaie" => $key,
   				"valeurEUR" => $valeurEUR,
-  				"valeurBTC" => $valeurBTC
+  				"valeurBTC" => $valeurBTC,
+  		        "stop" => $stop
   		];
   		
   	
@@ -104,7 +122,7 @@ $donnee = $rep->fetch();
   }
 asort($this->_graph);
 
-  
+
   
   }
   
@@ -173,6 +191,7 @@ window.addEventListener("load",graphf,false);
        <td>Quantité</td>
 		<td>Prix BTC</td>
         <td>Prix USD</td>
+        <td>stop USD</td>
 		<td>Valeur BTC</td>
 		<td>Valeur USD</td>
    </tr>
@@ -190,6 +209,7 @@ window.addEventListener("load",graphf,false);
   		echo "<td>".$one['quantite']."</td>";
   		echo "<td>".$one['prixBTC']."</td>";
   		echo "<td>".$one['prixEUR']."</td>";
+  		echo "<td>".$one['stop']."</td>";
   		echo "<td>".number_format($one['valeurBTC'],5)."</td>";
   		echo "<td>".number_format($one['valeurEUR'],2)."</td>";
   		echo "</tr>";
@@ -766,7 +786,6 @@ return $donnee["debut_mois"];
   	
   	$total = 0;
 
-  	
   	foreach ($this->_pfval as $one)
   	{
   		
