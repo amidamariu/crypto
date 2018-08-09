@@ -53,7 +53,7 @@ $pf = trader::get_pfs_kraken();
 		try {
 			$key = $one['monnaie'];
 		
-		if($key != 'ZUSD')
+		if($key != 'ZUSD' && $key != 'ZEUR')
 		{
 			$pair =	KrakenAPI::get_pair($key,'ZUSD');
 
@@ -63,8 +63,16 @@ $pf = trader::get_pfs_kraken();
 		}
 		else
 		{
+			if($key == 'ZEUR')
+			{
+			$prix = 1.17;
+			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZEUR',".$prix.",'kraken')";
+			}
+			else
+			{
 			$prix = 1;
-			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZUSD'".$prix.",'kraken')";
+			$sql = "REPLACE INTO price (monnaie,prix,plateforme) VALUES ('ZUSD',".$prix.",'kraken')";
+			}
 		}
 
 		$bdd->query($sql);
