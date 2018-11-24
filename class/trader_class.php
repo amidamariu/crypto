@@ -50,6 +50,8 @@ $donnee = $rep->fetch();
   	$key = $one['monnaie'];
   
   	
+ 
+  	
   	if($key=='BTC' || $key=='XXBT')
   	{
   		$prixBTC = 1;
@@ -59,13 +61,10 @@ $donnee = $rep->fetch();
   		$prixBTC = get_prix_sql2($key,'BTC',$one['plateforme']);
   		
   	}
-  	
-  	
 
 
-  	
-  	
-  	if($key=='USDT')
+  		
+  	if($key=='ZUSD' || $key=='USDT')
   	{
   		$prixEUR = 1;
   	}
@@ -73,6 +72,9 @@ $donnee = $rep->fetch();
   	{
   		$prixEUR = get_prix_sql2($key,'USD',$one['plateforme']);
   	}
+  
+  	
+
 	
 	  	if($key=='ZEUR')
   	{
@@ -82,15 +84,18 @@ $donnee = $rep->fetch();
   	
   	if ($one['plateforme'] == "binance")
   	{
-  		$stop = $bin->openOrders($key."USDT")[0]["stopPrice"];
-  		$stop = round($stop,2)."(".round((100*($prixEUR-$stop)/$prixEUR),2)."%)";
+  	//	$stop = $bin->openOrders($key."USDT")[0]["stopPrice"];
+  	//	$stop = round($stop,2)."(".round((100*($prixEUR-$stop)/$prixEUR),2)."%)";
   	}
-  	
+  	$stop=0;
 	
   	$t1 = microtime(true);
  // 	echo "temps requete ".($t1-$t0)."<br>";
   	
   	$valeurEUR = $prixEUR*$one['quantite'];
+  	
+  	echo $key." ".$valeurEUR." ".$prixEUR."*".$one['quantite']."<br>";
+  	
   	$valeurBTC = $prixBTC*$one['quantite'];
   	if($valeurEUR > 5)
   	{
